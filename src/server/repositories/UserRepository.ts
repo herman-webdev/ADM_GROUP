@@ -6,6 +6,10 @@ interface IFindByEmailOptions {
 	transaction?: Transaction;
 }
 
+interface IFindByIdOptions {
+	transaction?: Transaction;
+}
+
 interface IFindByLoginOptions {
 	transaction?: Transaction;
 	scope?: string;
@@ -25,6 +29,17 @@ export class UserRepository {
 			},
 			transaction,
 		});
+	}
+
+	static async findById(id: string, options: IFindByIdOptions = {}): Promise<User | null> {
+		const { transaction, } = options;
+
+		return User.findOne({
+			where: {
+				id,
+			},
+			transaction,
+		})
 	}
 
 	static async findByLogin(

@@ -1,5 +1,5 @@
 import { ServerRoute, } from '@hapi/hapi';
-import * as api from '../api/auth';
+import * as api from '../api';
 import * as auth from '../schemas/auth';
 import { outputEmptySchema, outputOkSchema, } from '../schemas/common';
 import { AuthStrategy, } from '../enums';
