@@ -25,17 +25,6 @@ interface IUpdateOptions {
 }
 
 export class UserRepository {
-	static async findByEmail(email: string, options: IFindByEmailOptions = {}): Promise<User | null> {
-		const { transaction, } = options;
-
-		return User.findOne({
-			where: {
-				email,
-			},
-			transaction,
-		});
-	}
-
 	static async findById(id: string, options: IFindByIdOptions = {}): Promise<User | null> {
 		const { transaction, } = options;
 
@@ -45,6 +34,17 @@ export class UserRepository {
 			},
 			transaction,
 		})
+	}
+
+	static async findByEmail(email: string, options: IFindByEmailOptions = {}): Promise<User | null> {
+		const { transaction, } = options;
+
+		return User.findOne({
+			where: {
+				email,
+			},
+			transaction,
+		});
 	}
 
 	static async findByLogin(

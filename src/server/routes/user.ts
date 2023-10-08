@@ -1,7 +1,7 @@
 import { ServerRoute, } from '@hapi/hapi';
 import { outputOkSchema, } from '../schemas/common';
 import { AuthStrategy, } from '../enums';
-import * as auth from '../schemas/auth';
+import * as user from '../schemas/user';
 import * as api from '../api'
 
 export default <ServerRoute[]>[
@@ -11,11 +11,11 @@ export default <ServerRoute[]>[
 		handler: api.getUserById,
 		options: {
 		  auth: AuthStrategy.JwtAccess,
-		  id: 'auth.user',
+		  id: 'user.id',
 		  description: 'Get by id',
 		  tags: ['api', 'user'],
 		  response: {
-				schema: outputOkSchema(auth.userIdSchema),
+				schema: outputOkSchema(user.userIdSchema),
 		  },
 		},
 	  },
@@ -25,11 +25,11 @@ export default <ServerRoute[]>[
 		handler: api.dataChange,
 		options: {
 		  auth: AuthStrategy.JwtAccess,
-		  id: 'auth.dataChange',
+		  id: 'user.update',
 		  description: 'Data changing',
 		  tags: ['api', 'user'],
 		  response: {
-				schema: outputOkSchema(auth.changeDataSchema),
+				schema: outputOkSchema(user.changeDataSchema),
 		  },
 		},
 	  }
