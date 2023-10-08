@@ -1,5 +1,6 @@
 import { Transaction, } from 'sequelize';
 import { Wallet, } from '../database/models';
+import { WalletStatus, } from '../enums';
 
 interface ICreateOptions {
 	transaction?: Transaction;
@@ -14,7 +15,7 @@ export class WalletRepository {
 		const wallet = await Wallet.create({
 			userId,
 			walletHash,
-			status: 'active',
+			status: WalletStatus.Active,
 		}, {transaction,});
     
 		return wallet;
