@@ -1,6 +1,7 @@
 import { Op, Transaction, } from 'sequelize';
 import { User, } from '../database/models';
 import { UserStatus, } from '../enums';
+import { IUpdateData, } from '../interfaces';
 
 interface IFindByEmailOptions {
 	transaction?: Transaction;
@@ -16,6 +17,10 @@ interface IFindByLoginOptions {
 }
 
 interface ICreateOptions {
+	transaction?: Transaction;
+}
+
+interface IUpdateOptions {
 	transaction?: Transaction;
 }
 
@@ -65,15 +70,29 @@ export class UserRepository {
 
 	static async create(
 		values: Partial<User>,
-		options: ICreateOptions = {}
+		options: IUpdateOptions = {}
 	): Promise<User | null> {
 		const { transaction, } = options;
 
-		return User.create({
+		return await User.create({
 			...values,
 			status: UserStatus.Active,
 		}, {
 			transaction,
 		});
 	}
+
+	static async update(
+		payload: IUpdateData,
+		options: ICreateOptions = {},
+		id: string
+	  ): Promise<[number, User[]] | null> {
+		const { transaction, } = options;
+		
+		return await User.update(payload, {
+		  where: { id: id, },
+		  transaction,
+		}); 
+	  }
+	  
 }

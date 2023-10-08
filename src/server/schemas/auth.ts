@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { emailSchema, passwordSchema, idSchema, } from './common';
+import { emailSchema, passwordSchema, idSchema, stringSchema, } from './common';
 import { AuthToken, } from '../enums';
 
 export const jwtTokensSchema = Joi.object({
@@ -48,7 +48,13 @@ export const restorePasswordSchema = Joi.object({
 }).label('Restore password');
 
 export const userIdSchema = Joi.object({
-	id: idSchema.required(), // Include the user's ID field here
+	id: idSchema.required(),
 	email: emailSchema,
 	password: passwordSchema.required(),
 }).label('User');
+
+export const changeDataSchema = Joi.object({
+	id: idSchema.required(),
+	firstName: stringSchema,
+	lastName: stringSchema,
+}).label('Data Change')

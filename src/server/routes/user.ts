@@ -11,11 +11,25 @@ export default <ServerRoute[]>[
 		handler: api.getUserById,
 		options: {
 		  auth: AuthStrategy.JwtAccess,
-		  id: 'auth.info',
-		  description: 'Access protected information',
-		  tags: ['api', 'auth'],
+		  id: 'auth.user',
+		  description: 'Get by id',
+		  tags: ['api', 'user'],
 		  response: {
 				schema: outputOkSchema(auth.userIdSchema),
+		  },
+		},
+	  },
+	  {
+		method: 'PUT',
+		path: '/user/update',
+		handler: api.dataChange,
+		options: {
+		  auth: AuthStrategy.JwtAccess,
+		  id: 'auth.dataChange',
+		  description: 'Data changing',
+		  tags: ['api', 'user'],
+		  response: {
+				schema: outputOkSchema(auth.changeDataSchema),
 		  },
 		},
 	  }
