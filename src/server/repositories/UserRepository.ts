@@ -24,6 +24,12 @@ interface IUpdateOptions {
 	transaction?: Transaction;
 }
 
+interface IFindAllWithPaginationOptions {
+	offset: number;
+	limit: number;
+	transaction?: Transaction;
+}
+
 export class UserRepository {
 	static async findById(id: string, options: IFindByIdOptions = {}): Promise<User | null> {
 		const { transaction, } = options;
@@ -35,6 +41,21 @@ export class UserRepository {
 			transaction,
 		})
 	}
+
+	static async findAllWithPagination(options: IFindAllWithPaginationOptions) {
+		const { offset, limit, transaction, } = options;
+
+		const result = await User.findAndCountAll({
+		  	offset,
+		  	limit,
+			transaction,
+		});
+	
+		return {
+		  	rows: result.rows,
+		  	count: result.count,
+		};
+	  }
 
 	static async findByEmail(email: string, options: IFindByEmailOptions = {}): Promise<User | null> {
 		const { transaction, } = options;

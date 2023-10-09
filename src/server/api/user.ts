@@ -3,14 +3,60 @@ import * as Hapi from '@hapi/hapi';
 import { UserRepository, } from '../repositories';
 import { IUserId, } from 'server/interfaces';
 import { Errors, ErrorsMessages, Exception, handlerError, } from '../utils';
-import { IOutputOk, IUpdateData, } from '../interfaces';
+import { IOutputOk, IUpdateData, IOutputPagination, } from '../interfaces';
 import { Boom, } from '@hapi/boom';
 import { User, } from 'server/database/models';
+
+
+export async function getAllUsers(r: Hapi.Request): Promise<IOutputPagination<User | User[]> | Boom> {
+	try {
+		const request = r.params;
+		const { email, page = '1', pageSize = '30', } = request;
+		console.log(email)
+	
+		const pageInt = parseInt(page as string, 10);
+		const pageSizeInt = parseInt(pageSize as string, 10);
+
+		if (email) {
+			const user = await UserRepository.findByEmail(email as string, {});
+			if (!user) {
+				throw new Exception(Errors.UserNotFound, ErrorsMessages[Errors.UserNotFound], {
+					email: email,
+				});
+			}
+			
+			return {
+				ok: true,
+				result: {
+					count: 1,
+					rows: user,
+				},
+			};
+		} else {
+			const offset = (pageInt - 1) * pageSizeInt;
+
+			const { rows, count, } = await UserRepository.findAllWithPagination({
+				offset,
+				limit: pageSizeInt,
+			  });
+
+			return {
+				ok: true,
+				result: {
+				  count,
+				  rows,
+				},
+			};
+		}
+	} catch (err) {
+		return handlerError('Failed to search a user', err);
+	}
+}
 
 export async function getUserById(r: Hapi.Request): Promise<IOutputOk<User> | Boom> {
 	try{
 		const { id, } = r.params as IUserId;
-        
+		
 		const user = await UserRepository.findById(id)
 		if(!user) {
 			throw new Exception(Errors.UserNotFound, ErrorsMessages[Errors.UserNotFound], {

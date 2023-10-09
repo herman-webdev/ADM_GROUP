@@ -1,5 +1,5 @@
 import { ServerRoute, } from '@hapi/hapi';
-import { outputOkSchema, } from '../schemas/common';
+import { outputOkSchema, outputResultSchema, } from '../schemas/common';
 import { AuthStrategy, } from '../enums';
 import * as user from '../schemas/user';
 import * as api from '../api'
@@ -14,9 +14,28 @@ export default <ServerRoute[]>[
 		  id: 'user.id',
 		  description: 'Get by id',
 		  tags: ['api', 'user'],
+			//   validate: {
+			// 		params: {
+			// 			id: user.userIdSchema,
+			// 		},
+			//   },
 		  response: {
 				schema: outputOkSchema(user.userIdSchema),
 		  },
+		},
+	  },
+	  {
+		method: 'GET',
+		path: '/user/search/{email?}',
+		handler: api.getAllUsers,
+		options: {
+			auth: AuthStrategy.JwtAccess,
+			id: 'user.users.email',
+			description: 'Get all or by email',
+			tags: ['api', 'user'],
+			response: {
+				schema: outputResultSchema(user.userSearchSchema),
+			},
 		},
 	  },
 	  {
@@ -28,6 +47,9 @@ export default <ServerRoute[]>[
 		  id: 'user.update',
 		  description: 'Data changing',
 		  tags: ['api', 'user'],
+			//   validate: {
+			// 		payload: user.changeDataSchema,
+			//   },
 		  response: {
 				schema: outputOkSchema(user.changeDataSchema),
 		  },

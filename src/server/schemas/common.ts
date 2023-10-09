@@ -24,6 +24,13 @@ export function outputPaginationSchema(res: Joi.Schema): Joi.Schema {
 	}).label('outputPaginationSchema');
 }
 
+export function outputResultSchema(res: Joi.Schema): Joi.Schema {
+	return Joi.alternatives().try(
+	  outputPaginationSchema(res), 
+	  outputOkSchema(res) 
+	).label('outputResultSchema');
+}
+
 export const stringSchema = Joi.string().max(STRING_MAX_LENGTH).label('String');
 
 export const idSchema = Joi.number().example(10).label('id');
