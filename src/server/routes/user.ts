@@ -10,18 +10,18 @@ export default <ServerRoute[]>[
 		path: '/user/{id}',
 		handler: api.getUserById,
 		options: {
-		  auth: AuthStrategy.JwtAccess,
-		  id: 'user.id',
-		  description: 'Get by id',
-		  tags: ['api', 'user'],
-			  validate: {
+			auth: AuthStrategy.JwtAccess,
+			id: 'user.id',
+			description: 'Get by id',
+			tags: ['api', 'user'],
+			validate: {
 				query: {
 					id: user.userIdSchema,
 				},
 			  },
-		  response: {
+			response: {
 				schema: outputOkSchema(user.userSchema),
-		  },
+			},
 		},
 	  },
 	  {
@@ -62,16 +62,16 @@ export default <ServerRoute[]>[
 		path: '/user/update',
 		handler: api.dataChange,
 		options: {
-		  auth: AuthStrategy.JwtAccess,
-		  id: 'user.update',
-		  description: 'Data changing',
-		  tags: ['api', 'user'],
-			  validate: {
+			auth: AuthStrategy.JwtAccess,
+			id: 'user.update',
+			description: 'Data changing',
+			tags: ['api', 'user'],
+			validate: {
 				payload: user.changeDataSchema,
-			  },
-		  response: {
+			},
+			response: {
 				schema: outputOkSchema(user.userSchema),
-		  },
+			},
 		},
 	  }
 ]
