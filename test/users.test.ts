@@ -50,4 +50,12 @@ describe('Users', () => {
 
         expect(res.statusCode).toEqual(200);
     });
+
+    it('Get All', async () => {
+        res = await server.inject(
+            getServerInjectOptions(`/api/user/search/`, 'GET', access)
+        );
+
+        expect(res.statusCode).toEqual(200);
+    });
 });
