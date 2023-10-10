@@ -39,6 +39,20 @@ export default <ServerRoute[]>[
 		},
 	  },
 	  {
+		method: 'GET',
+		path: '/user/info/last-month',
+		handler: api.getLastMonthInfo,
+		options: {
+			auth: AuthStrategy.JwtAccess,
+			id: 'user.info.last-month',
+			description: 'Get info for last month',
+			tags: ['api', 'user'],
+			response: {
+				schema: outputResultSchema(user.userSearchSchema),
+			},
+		},
+	  },
+	  {
 		method: 'PUT',
 		path: '/user/update',
 		handler: api.dataChange,

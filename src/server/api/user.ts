@@ -12,7 +12,6 @@ export async function getAllUsers(r: Hapi.Request): Promise<IOutputPagination<Us
 	try {
 		const request = r.params;
 		const { email, page = '1', pageSize = '30', } = request;
-		console.log(email)
 	
 		const pageInt = parseInt(page as string, 10);
 		const pageSizeInt = parseInt(pageSize as string, 10);
@@ -49,7 +48,29 @@ export async function getAllUsers(r: Hapi.Request): Promise<IOutputPagination<Us
 			};
 		}
 	} catch (err) {
-		return handlerError('Failed to search a user', err);
+		return handlerError('Failed to get or search a user', err);
+	}
+}
+
+export async function getLastMonthInfo(r: Hapi.Request): Promise<IOutputPagination<User | User[]> | Boom> {
+	try {
+		const { page = '1', pageSize = '30', } = r.query;
+
+		const pageInt = parseInt(page as string, 10);
+		const pageSizeInt = parseInt(pageSize as string, 10);
+		const offset = (pageInt - 1) * pageSizeInt;
+
+		const {rows, count,} = await UserRepository.findLastMonth({ offset, limit: pageSizeInt, });
+
+		return {
+			ok: true,
+			result: {
+				count,
+				rows,
+			},
+		  };
+	} catch(err) {
+		return handlerError('Failed to get users', err);
 	}
 }
 

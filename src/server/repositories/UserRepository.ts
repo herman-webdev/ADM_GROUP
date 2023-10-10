@@ -57,6 +57,28 @@ export class UserRepository {
 		};
 	  }
 
+	  static async findLastMonth(options: IFindAllWithPaginationOptions) {
+		const { offset, limit, transaction, } = options;
+		
+		const startDate = new Date();
+		startDate.setUTCMonth(startDate.getUTCMonth() - 1);
+	
+		const endDate = new Date();
+		
+		const result = await User.findAndCountAll({
+		  where: {
+				createdAt: {
+			  		[Op.between]: [startDate, endDate],
+				},
+		  },
+		  offset,
+		  limit,
+		  transaction,
+		});
+	  
+		return result;
+	  }
+
 	static async findByEmail(email: string, options: IFindByEmailOptions = {}): Promise<User | null> {
 		const { transaction, } = options;
 
