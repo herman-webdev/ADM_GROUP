@@ -26,14 +26,9 @@ export class SessionRepository {
 	}
 
 	static async createUserSession(userId: string, transaction?: Transaction): Promise<Session> {
-		return Session.create(
-			{
-				userId,
-				status: SessionStatus.Active,
-			},
-			{
-				transaction,
-			}
-		);
+		return Session.create({
+			userId,
+			status: SessionStatus.Active,
+		}, {transaction,});
 	}
 }

@@ -4,9 +4,11 @@ import { Session, } from '../database/models';
 import { ICredentials, IJwt, IOutputEmpty, IOutputOk, ISignUpCredentials, } from '../interfaces';
 import { Errors, ErrorsMessages, Exception, handlerError, outputEmpty, outputOk, } from '../utils';
 import { SessionStatus, UserStatus, } from '../enums';
-import { JwtTokenHelper, } from '../helpers/JwtTokenHelper';
-import { UserRepository, } from '../repositories/UserRepository';
-import { SessionRepository, } from '../repositories/SessionRepository';
+import { JwtTokenHelper, } from '../helpers';
+import { UserRepository, } from '../repositories';
+import { SessionRepository, } from '../repositories';
+import { WalletHashHelper, } from '../helpers';
+import { WalletRepository, } from '../repositories';
 
 export async function signup(
 	r: Hapi.Request
@@ -19,7 +21,13 @@ export async function signup(
 				email: cred.email,
 			});
 
+		const randomWallet = WalletHashHelper.randomByteSymbols();
+		const walletHash = WalletHashHelper.generateHash(randomWallet);
+
 		user = await UserRepository.create({ email: cred.email, password: cred.password, });
+		if (user) {
+			await WalletRepository.createWallet(user.id, walletHash);
+		}
 		return outputEmpty();
 	} catch (err) {
 		return handlerError('Failed to sign-up', err as Error);
@@ -39,7 +47,6 @@ export async function login(r: Hapi.Request): Promise<IOutputOk<IJwt> | Boom> {
 
 		if (user.status !== UserStatus.Active)
 			throw new Exception(Errors.UserNotActive, ErrorsMessages[Errors.UserNotActive]);
-
 		const { id: sessionId, } = await SessionRepository.createUserSession(user.id);
 		const tokens = JwtTokenHelper.generateJwt({ sessionId, });
 

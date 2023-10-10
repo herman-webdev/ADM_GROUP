@@ -14,6 +14,10 @@ export function outputOkSchema(res: Joi.Schema): Joi.Schema {
 	}).label('outputOkSchema');
 }
 
+export const paginationPageSchema = Joi.number().integer().min(1).optional();
+
+export const paginationPageSizeSchema = Joi.number().integer().min(1).optional();
+
 export function outputPaginationSchema(res: Joi.Schema): Joi.Schema {
 	return Joi.object({
 		ok: okSchema,
@@ -22,6 +26,13 @@ export function outputPaginationSchema(res: Joi.Schema): Joi.Schema {
 			rows: Joi.array().items(res),
 		}),
 	}).label('outputPaginationSchema');
+}
+
+export function outputResultSchema(res: Joi.Schema): Joi.Schema {
+	return Joi.alternatives().try(
+	  outputPaginationSchema(res), 
+	  outputOkSchema(res) 
+	).label('outputResultSchema');
 }
 
 export const stringSchema = Joi.string().max(STRING_MAX_LENGTH).label('String');
