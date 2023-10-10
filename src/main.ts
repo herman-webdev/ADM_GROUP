@@ -16,6 +16,7 @@ import { Database, } from './server/database/Database';
 import { AuthStrategy, AuthToken, } from './server/enums';
 import { swaggerConfig, } from './server/config/swagger';
 import { Sequelize, } from 'sequelize-typescript';
+import Joi from 'joi';
 
 declare module '@hapi/hapi' {
 	export interface ServerApplicationState {
@@ -43,6 +44,8 @@ export async function init(): Promise<Hapi.Server> {
 			},
 		},
 	});
+	server.validator(Joi);
+
 	server.realm.modifiers.route.prefix = '/api';
 	await server.register([Basic, Nes, Inert, Vision, HapiBearer] as unknown as Array<
 		Hapi.Plugin<unknown>

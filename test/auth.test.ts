@@ -15,10 +15,10 @@ describe('Auth', () => {
 
 	let email: string = `${getUUID()}@example.com`;
 
-  const signUp: ISignUpCredentials = {
-    email,
-    password,
-  };
+	const signUp: ISignUpCredentials = {
+		email,
+		password,
+	};
 
 	const specialistCred: ICredentials = {
 		login: email,

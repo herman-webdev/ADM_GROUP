@@ -134,6 +134,7 @@ export class UserRepository {
 		
 		return await User.update(payload, {
 		  where: { id: id, },
+		  returning: true,
 		  transaction,
 		}); 
 	  }

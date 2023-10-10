@@ -1,14 +1,12 @@
 import Joi from 'joi';
-import { emailSchema, passwordSchema, idSchema, stringSchema, } from './common';
+import { emailSchema, guidSchema, stringSchema, } from './common';
 
 export const userIdSchema = Joi.object({
-	id: idSchema.required(),
-	email: emailSchema,
-	password: passwordSchema.required(),
+	id: guidSchema.required(),
 }).label('User');
 
 export const userSchema = Joi.object({
-	id: idSchema.required(),
+	id: guidSchema.required(),
 	firstName: stringSchema,
 	lastName: stringSchema,
 	email: emailSchema,
@@ -19,7 +17,6 @@ export const userSearchSchema = Joi.object({
 }).label('User Search');
 
 export const changeDataSchema = Joi.object({
-	id: idSchema.required(),
-	firstName: stringSchema,
-	lastName: stringSchema,
+	firstName: stringSchema.required(),
+	lastName: stringSchema.required(),
 }).label('Data Change')
