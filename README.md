@@ -1,61 +1,55 @@
-# OutStuff Framework
+# Test Task for "AMD GROUP"
 
-- To start the server use:
+The test task includes creating four routes and modifications to the registration route (creating a wallet on sha256 hashing). Each route of new API, which is named "user", has an own validation.
 
-```sh
-$ npm install
-$ npm start
+---
+Acrhitecture: [figma](https://www.figma.com/file/3Fzb8rJZoMzq9mZIwgqYNa/%22AMD-GROUP%22-test-task?type=whiteboard&t=HdWaIqZIa3ncuXnN-6)
+
+---
+## Documentation
+
+- `POST: /api/auth/registration`
+
+Сreating a user with a wallet by a 1-to-1 association
+
+- `GET: /api/user/{id}`
+
+Searching user's id
+
+- `GET: /api/user/search`
+
+Getting default pagination of all users
+
+- `GET: /api/user/search/{email?}`
+
+Searching user by email
+
+- `GET: /api/user/search?page=1&pageSize=4`
+
+Getting pagination of all users with query
+
+- `GET: /api/user/info/last-month`
+
+Getting pagination of all users withing last month
+
+- `GET: /api/user/info/last-month?page=1&pageSize=4`
+
+Getting pagination of all users withing last month with query
+
+- `PUT: /api/user/update`
+
+Updating user's firt or last names
+
+
+## How to run?
+
+```bash
+pnpm install
+pnpm start
 ```
 
-or
+for testing:
 
-```sh
-$ pnpm install
-$ npm start
+```bash
+pnpm test
 ```
-
-### REST DOCUMENTATION
-
-All documentation is available via:
-`/api/documentation`
-If you have any errors, check `host` in `swagger.json`.
-
-### DEFAULT SERVER RESPONSES
-
-Default success response (200):
-
-```json
-{
-	"ok": true,
-	"result": {}
-}
-```
-
-Default error response:
-
-```json
-{
-	"ok": false,
-	"code": 404000,
-	"msg": "Not found.",
-	"data": {}
-}
-```
-
-### DEFAULT PAGINATION
-
-`GET - /api/projects?offset=10&limit=10`
-
-Default response with server pagination:
-
-```json
-{
-	"ok": true,
-	"result": {
-		"count": 10,
-		"data": []
-	}
-}
-```
-
-# outstuff-main
