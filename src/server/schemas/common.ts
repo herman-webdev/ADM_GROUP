@@ -14,6 +14,10 @@ export function outputOkSchema(res: Joi.Schema): Joi.Schema {
 	}).label('outputOkSchema');
 }
 
+export const paginationPageSchema = Joi.number().integer().min(1).optional();
+
+export const paginationPageSizeSchema = Joi.number().integer().min(1).optional();
+
 export function outputPaginationSchema(res: Joi.Schema): Joi.Schema {
 	return Joi.object({
 		ok: okSchema,

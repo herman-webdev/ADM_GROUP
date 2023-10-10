@@ -10,8 +10,8 @@ import { User, } from 'server/database/models';
 
 export async function getAllUsers(r: Hapi.Request): Promise<IOutputPagination<User | User[]> | Boom> {
 	try {
-		const request = r.params;
-		const { email, page = '1', pageSize = '30', } = request;
+		const { email, } = r.params;
+		const { page = '1', pageSize = '30', } = r.query;
 	
 		const pageInt = parseInt(page as string, 10);
 		const pageSizeInt = parseInt(pageSize as string, 10);
@@ -34,10 +34,11 @@ export async function getAllUsers(r: Hapi.Request): Promise<IOutputPagination<Us
 		} else {
 			const offset = (pageInt - 1) * pageSizeInt;
 
-			const { rows, count, } = await UserRepository.findAllWithPagination({
+			const { rows, } = await UserRepository.findAllWithPagination({
 				offset,
 				limit: pageSizeInt,
 			  });
+			const count = rows.length;
 
 			return {
 				ok: true,
@@ -60,7 +61,11 @@ export async function getLastMonthInfo(r: Hapi.Request): Promise<IOutputPaginati
 		const pageSizeInt = parseInt(pageSize as string, 10);
 		const offset = (pageInt - 1) * pageSizeInt;
 
-		const {rows, count,} = await UserRepository.findLastMonth({ offset, limit: pageSizeInt, });
+		const {rows,} = await UserRepository.findLastMonth({ 
+			offset, 
+			limit: pageSizeInt, 
+		});
+		const count = rows.length;
 
 		return {
 			ok: true,
