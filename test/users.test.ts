@@ -14,7 +14,7 @@ describe('Users', () => {
 
 	let access: string;
 
-    const uuid = 'f7361d04-bed8-4b3f-ab59-2d0f71be0599'
+    const uuid = '' //paste created id in /test_database
 
 	let email: string = `${getUUID()}@example.com`;
 
