@@ -14,13 +14,13 @@ export default <ServerRoute[]>[
 		  id: 'user.id',
 		  description: 'Get by id',
 		  tags: ['api', 'user'],
-			//   validate: {
-			// 		params: {
-			// 			id: user.userIdSchema,
-			// 		},
-			//   },
+			  validate: {
+				query: {
+					id: user.userIdSchema,
+				},
+			  },
 		  response: {
-				schema: outputOkSchema(user.userIdSchema),
+				schema: outputOkSchema(user.userSchema),
 		  },
 		},
 	  },
@@ -33,8 +33,13 @@ export default <ServerRoute[]>[
 			id: 'user.users.email',
 			description: 'Get all or by email',
 			tags: ['api', 'user'],
+			validate: {
+				query: {
+					email: user.userSearchSchema,
+				},
+			},
 			response: {
-				schema: outputResultSchema(user.userSearchSchema),
+				schema: outputResultSchema(user.userSchema),
 			},
 		},
 	  },
@@ -61,11 +66,11 @@ export default <ServerRoute[]>[
 		  id: 'user.update',
 		  description: 'Data changing',
 		  tags: ['api', 'user'],
-			//   validate: {
-			// 		payload: user.changeDataSchema,
-			//   },
+			  validate: {
+				payload: user.changeDataSchema,
+			  },
 		  response: {
-				schema: outputOkSchema(user.changeDataSchema),
+				schema: outputOkSchema(user.userSchema),
 		  },
 		},
 	  }
