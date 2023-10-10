@@ -1,5 +1,5 @@
 import { ServerRoute, } from '@hapi/hapi';
-import { outputOkSchema, outputResultSchema, } from '../schemas/common';
+import { emailSchema, idSchema, outputOkSchema, outputResultSchema, paginationPageSchema, paginationPageSizeSchema, } from '../schemas/common';
 import { AuthStrategy, } from '../enums';
 import * as user from '../schemas/user';
 import * as api from '../api'
@@ -16,7 +16,7 @@ export default <ServerRoute[]>[
 			tags: ['api', 'user'],
 			validate: {
 				query: {
-					id: user.userIdSchema,
+					id: idSchema,
 				},
 			  },
 			response: {
@@ -34,15 +34,19 @@ export default <ServerRoute[]>[
 			description: 'Get all or by email',
 			tags: ['api', 'user'],
 			validate: {
+				params: {
+			  		email: emailSchema,
+				},
 				query: {
-					email: user.userSearchSchema,
+					page: paginationPageSchema,
+					pageSize: paginationPageSizeSchema,
 				},
 			},
 			response: {
 				schema: outputResultSchema(user.userSchema),
 			},
 		},
-	  },
+	  },	  
 	  {
 		method: 'GET',
 		path: '/user/info/last-month',
@@ -52,8 +56,14 @@ export default <ServerRoute[]>[
 			id: 'user.info.last-month',
 			description: 'Get info for last month',
 			tags: ['api', 'user'],
+			validate: {
+				query: {
+					page: paginationPageSchema,
+					pageSize: paginationPageSizeSchema,
+				},
+			},
 			response: {
-				schema: outputResultSchema(user.userSearchSchema),
+				schema: outputResultSchema(user.userSchema),
 			},
 		},
 	  },
