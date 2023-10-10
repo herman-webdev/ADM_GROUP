@@ -21,6 +21,7 @@
     "hapi-pulse": "^3.0.0",
     "hapi-swagger": "^14.1.0",
     "joi": "^17.4.2",
+    "jsonwebtoken": "^9.0.2",
     "node-fetch": "^2.6.6",
     "openapi-types": "^12.1.0",
     "pg": "^8.3.0",
