@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as Hapi from '@hapi/hapi';
 import { UserRepository, } from '../repositories';
-import { IUserId, } from 'server/interfaces';
+import { IPagination, IUserEmail, IUserId, } from 'server/interfaces';
 import { Errors, ErrorsMessages, Exception, handlerError, } from '../utils';
 import { IOutputOk, IUpdateData, IOutputPagination, } from '../interfaces';
 import { Boom, } from '@hapi/boom';
@@ -10,14 +10,11 @@ import { User, } from 'server/database/models';
 
 export async function getAllUsers(r: Hapi.Request): Promise<IOutputPagination<User | User[]> | Boom> {
 	try {
-		const { email, } = r.params;
-		const { page = '1', pageSize = '30', } = r.query;
-	
-		const pageInt = parseInt(page as string, 10);
-		const pageSizeInt = parseInt(pageSize as string, 10);
+		const { email, } = r.params as IUserEmail;
+		const { page = 1, pageSize = 30, } = r.query as IPagination;
 
 		if (email) {
-			const user = await UserRepository.findByEmail(email as string, {});
+			const user = await UserRepository.findByEmail(email, {});
 			if (!user) {
 				throw new Exception(Errors.UserNotFound, ErrorsMessages[Errors.UserNotFound], {
 					email: email,
@@ -32,11 +29,11 @@ export async function getAllUsers(r: Hapi.Request): Promise<IOutputPagination<Us
 				},
 			};
 		} else {
-			const offset = (pageInt - 1) * pageSizeInt;
+			const offset = (page - 1) * pageSize;
 
 			const { rows, } = await UserRepository.findAllWithPagination({
 				offset,
-				limit: pageSizeInt,
+				limit: pageSize,
 			  });
 			const count = rows.length;
 
@@ -55,7 +52,7 @@ export async function getAllUsers(r: Hapi.Request): Promise<IOutputPagination<Us
 
 export async function getLastMonthInfo(r: Hapi.Request): Promise<IOutputPagination<User | User[]> | Boom> {
 	try {
-		const { page = '1', pageSize = '30', } = r.query;
+		const { page = '1', pageSize = '30', } = r.query as IPagination;
 
 		const pageInt = parseInt(page as string, 10);
 		const pageSizeInt = parseInt(pageSize as string, 10);
