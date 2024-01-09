@@ -1,4 +1,4 @@
-# Test Task for "AMD GROUP"
+# Test Task
 
 The test task includes creating four routes and modifications to the registration route (creating a wallet on sha256 hashing). Each route of new API, which is named "user", has an own validation.
 
